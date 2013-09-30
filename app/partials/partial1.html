@@ -1,0 +1,8 @@
+<h2>Список тестов</h2>
+<hr/>
+<ul ng-show="surveys">
+    <li ng-repeat='survey in surveys'>
+        <a href="view2/{{survey.code}}">{{survey.name}}</a>
+    </li>
+</ul>
+
