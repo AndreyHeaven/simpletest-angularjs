@@ -16,7 +16,7 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
 
     $routeProvider.when('/', {templateUrl: '/partials/partial1.html', controller: TestListCtrl,resolve:TestListCtrl.resolve});
     $routeProvider.when('/view2/:testKey', {templateUrl: '/partials/partial2.html', controller: AnswerCtrl});
-    $routeProvider.when('/view3/:resultKey', {templateUrl: '/partials/partial3.html', controller: 'MyCtrl3'});
+    $routeProvider.when('/view3/:resultKey', {templateUrl: '/partials/partial3.html', controller: ResultCtrl});
     $routeProvider.otherwise({redirectTo: '/'});
   }]);
 

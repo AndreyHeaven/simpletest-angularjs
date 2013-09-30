@@ -13,8 +13,10 @@
     </div>
 </div>
 <div>
-    {{index+1}}/{{questions.length}} <a ng-click="next()" ng-hide="index==questions.length-1">Next</a><a ng-click="finish()" ng-show="index==questions.length-1">Finish</a>
+    {{index+1}}/{{questions.length}}
+    <a ng-click="next()" ng-hide="index==questions.length-1">Next</a>
+    <a ng-click="finish()" ng-show="index==questions.length-1">Finish</a>
 </div>
 
-<pre>{{answer}}</pre>
-<pre>{{userAnswers|json}}</pre>
+<!--<pre>{{answer}}</pre>-->
+<!--<pre>{{userAnswers|json}}</pre>-->

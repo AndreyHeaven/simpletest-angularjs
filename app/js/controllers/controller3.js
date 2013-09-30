@@ -1,4 +1,4 @@
-function AnswerCtrl($scope, $http, $routeParams) {
+function ResultCtrl($scope, $http, $routeParams) {
   $http.get('/rest/result/'+$routeParams.resultKey).success(function(data) {
        $scope.result = data;
   });

@@ -52,11 +52,16 @@ class ResultHandler(webapp2.RequestHandler):
         survey = Survey.query(Survey.code == test_key).get()
         result = Result()
         result.test = survey.key
+        answers = json.loads(self.request.body)
         kw = {}
-        exec survey.script in kw
-        result.text = kw['result']
+        try:
+            exec survey.script in kw
+            result.text = kw['result']
+        except Exception:
+            pass
         result.put()
-        self.response.out.write(json.dumps({'key': result.key()}))
+        self.response.out.write(json.dumps({'key': result.key.urlsafe()}))
 
     def get(self, result_key):
-        self.response.out.write(Result.query(Result.key == result_key).get().text)
+        result = Key(result_key).get()
+        self.response.out.write(result.text)
