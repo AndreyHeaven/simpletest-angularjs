@@ -35,4 +35,5 @@ app = webapp2.WSGIApplication([
     # OTHER SERVER PAGES / ENDPOINTS
     ('/rest/surveys', SurveyListHandler),
     ('/rest/survey/(\w+)', AnswerHandler)
+    ('/rest/result/(\w+)', ResultHandler)
 ], debug=True)

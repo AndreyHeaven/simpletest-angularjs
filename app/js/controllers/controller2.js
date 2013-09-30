@@ -30,8 +30,7 @@ function AnswerCtrl($scope, $http, $routeParams) {
     $scope.finish = function(){
         var testKey = $routeParams.testKey;
 
-        $http.post('/rest/test_answer/'+testKey,$scope.userAnswers).success(function(data){
-
+        $http.put('/rest/result/'+testKey,$scope.userAnswers).success(function(data){
             $location.path('/view3/'+data.resultKey);
         })
     }

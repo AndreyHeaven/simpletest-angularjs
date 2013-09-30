@@ -47,4 +47,16 @@ class AnswerHandler(webapp2.RequestHandler):
             result.append({'id': q.id, 'text': q.text, 'type': q.type, 'answers': ans})
         self.response.out.write(json.dumps(result))
 
+class ResultHandler(webapp2.RequestHandler):
+    def put(self, test_key):
+        survey = Survey.query(Survey.code == test_key).get()
+        result = Result()
+        result.test = survey.key
+        kw = {}
+        exec survey.script in kw
+        result.text = kw['result']
+        result.put()
+        self.response.out.write(json.dumps({'key': result.key()}))
 
+    def get(self, result_key):
+        self.response.out.write(Result.query(Result.key == result_key).get().text)

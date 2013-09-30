@@ -24,3 +24,9 @@ class Answer(ndb.Model):
     code = ndb.StringProperty()
     question = ndb.KeyProperty()
     text = ndb.StringProperty()
+
+class Result(ndb.Model):
+    date = ndb.DateTimeProperty(auto_now_add=True)
+    text = ndb.StringProperty()
+    answers = ndb.JsonProperty()
+    test = ndb.KeyProperty()
