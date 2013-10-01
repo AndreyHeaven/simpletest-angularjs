@@ -1,7 +1,9 @@
 import datetime
+from google.appengine.ext.ndb import Key
 import webapp2
 import json
 from model import *
+from google.appengine.api import users
 
 survey = Survey()
 survey.code = 'test1'
@@ -63,5 +65,20 @@ class ResultHandler(webapp2.RequestHandler):
         self.response.out.write(json.dumps({'key': result.key.urlsafe()}))
 
     def get(self, result_key):
-        result = Key(result_key).get()
+        result = Key(urlsafe=result_key).get()
         self.response.out.write(result.text)
+
+class UserHandler(webapp2.RequestHandler):
+    def get(self, action):
+
+        if action == 'login':
+            self.redirect(users.create_login_url(self.request.uri))
+        elif action == 'logout':
+            self.redirect(users.create_logout_url(self.request.uri))
+        elif action == 'me' and users.get_current_user():
+            self.response.out.write(json.dumps({
+                'admin': users.is_current_user_admin(),
+                'nickname': users.get_current_user().nickname()
+            }))
+        else:
+            self.response.set_status(401)

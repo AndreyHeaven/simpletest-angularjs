@@ -12,7 +12,7 @@
  */
 
 
-function AnswerCtrl($scope, $http, $routeParams) {
+function AnswerCtrl($scope, $http, $routeParams, $location) {
     $http.get('/rest/survey/' + $routeParams.testKey).success(function (data) {
         $scope.questions = data;
         $scope.index = 0;

@@ -31,9 +31,11 @@ app = webapp2.WSGIApplication([
     # CLIENT SIDE PAGES (LET ANGULAR HANDLE ROUTING)
     ('/', MainHandler),
     ('/view2/(\w+)', MainHandler),
-    ('/view3/(\w+)', MainHandler),
+    ('/view3/(.+)', MainHandler),
+    ('/view4/?', MainHandler),
     # OTHER SERVER PAGES / ENDPOINTS
     ('/rest/surveys', SurveyListHandler),
     ('/rest/survey/(\w+)', AnswerHandler),
-    ('/rest/result/(\w+)', ResultHandler),
+    ('/rest/result/(.+)', ResultHandler),
+    ('/api/user/(\w+)', UserHandler)
 ], debug=True)

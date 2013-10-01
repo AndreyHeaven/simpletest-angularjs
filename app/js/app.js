@@ -9,7 +9,7 @@ angular.module('myApp.controllers', []);
 
 // Declare app level module which depends on filters, and services
 
-angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'myApp.controllers']).
+angular.module('myApp', ['ui.bootstrap','myApp.filters', 'myApp.services', 'myApp.directives', 'myApp.controllers']).
   config(['$routeProvider','$locationProvider', function($routeProvider,$locationProvider) {
 
     $locationProvider.html5Mode(true).hashPrefix('!');
@@ -17,6 +17,7 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
     $routeProvider.when('/', {templateUrl: '/partials/partial1.html', controller: TestListCtrl,resolve:TestListCtrl.resolve});
     $routeProvider.when('/view2/:testKey', {templateUrl: '/partials/partial2.html', controller: AnswerCtrl});
     $routeProvider.when('/view3/:resultKey', {templateUrl: '/partials/partial3.html', controller: ResultCtrl});
+    $routeProvider.when('/view4', {templateUrl: '/partials/partial4.html', controller: AdminCtrl});
     $routeProvider.otherwise({redirectTo: '/'});
   }]);
 

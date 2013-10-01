@@ -1,2 +1,15 @@
-<h2>Result</h2>
-<pre>{{result}}</pre>
+<img src="http://chart.apis.google.com/chart?cht=qr&chs=200x200&chl={{location | escape}}=H|0" class="pull-right"/>
+<div class="panel panel-default" style="margin-right: 250px;">
+    <div class="panel-heading">Result</div>
+    <div class="panel-body">
+        <pre>{{result}}</pre>
+    </div>
+    <div class="panel-footer text-center">
+        <div class="btn-group">
+            <a class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Send by e-mail</a>
+            <a class="btn btn-default"><span class="glyphicon glyphicon-print"></span> Print</a>
+        </div>
+    </div>
+</div>
+
+

@@ -1,22 +1,37 @@
-<h2><span>{{index+1}}.</span> {{questions[index].text}}</h2>
-<div ng-switch="questions[index].type">
-    <div ng-switch-when="edit_text">
-        <input type="text" name="input" ng-model="$parent.answer"
-               required ng-trim="true">
-    </div>
-    <div ng-switch-default>
-        <ul>
-            <li ng-repeat="a in questions[index].answers">
-                <input type="radio" ng-model="$parent.$parent.answer" required ng-value="{{a.code}}"> {{a.text}}<br/>
-            </li>
-        </ul>
-    </div>
+<div class="page-header">
+    <h1>Test</h1>
 </div>
-<div>
-    {{index+1}}/{{questions.length}}
-    <a ng-click="next()" ng-hide="index==questions.length-1">Next</a>
-    <a ng-click="finish()" ng-show="index==questions.length-1">Finish</a>
+<dl>
+    <dt style="margin-bottom: 20px;"><span>{{index+1}}.</span> {{questions[index].text}}</dt>
+    <dd ng-switch="questions[index].type" style="margin-left: 20px; margin-right: 20px;">
+        <div ng-switch-when="edit_text">
+            <input class="form-control" type="text" name="input" ng-model="$parent.answer"
+                   required ng-trim="true">
+        </div>
+        <div ng-switch-default>
+            <ul class="list-unstyled">
+                <li ng-repeat="a in questions[index].answers">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" ng-model="$parent.$parent.answer" required ng-value="{{a.code}}">
+                            {{a.text}}<br/>
+                        </label>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </dd>
+</dl>
+<hr/>
+<div class="text-center">
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="1"
+             aria-valuemax="{{questions.length}}" style="width: {{(index+1)/questions.length*100}}%;">
+            <span class="sr-only">{{(index+1)/questions.length*100}}% Complete</span>
+        </div>
+    </div>
+    <a class="btn btn-primary" ng-click="next()" ng-hide="index==questions.length-1">Next <span
+            class="glyphicon glyphicon-arrow-right"></span></a>
+    <a class="btn btn-primary" ng-click="finish()" ng-show="index==questions.length-1"><span
+            class="glyphicon glyphicon-chevron-down"></span> Finish</a>
 </div>
-
-<!--<pre>{{answer}}</pre>-->
-<!--<pre>{{userAnswers|json}}</pre>-->

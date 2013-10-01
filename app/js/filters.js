@@ -7,4 +7,6 @@ angular.module('myApp.filters').
     return function(text) {
       return String(text).replace(/\%VERSION\%/mg, version);
     }
-  }]);
+  }]).filter('escape', function() {
+  return window.escape;
+});;
