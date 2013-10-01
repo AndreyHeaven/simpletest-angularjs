@@ -19,7 +19,7 @@ question.put()
 answer = Answer()
 answer.question = question.key
 answer.text = '22222'
-answer.code = '2'
+answer.value = '2'
 answer.put()
 
 question = Question()
