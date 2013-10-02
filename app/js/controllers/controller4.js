@@ -6,12 +6,24 @@ function AdminCtrl($scope, $http, $location,$window) {
         .error(function (data) {
             $location.path('/api/user/login')
         });*/
-    $http.get('/rest/surveys').success(function(data) {
-        $scope.surveys = data;
-    })
-    $scope.send = function(survey){
+	$scope.updateServeysList = function (){
+	    $http.get('/rest/surveys').success(function(data) {
+	        $scope.surveys = data;
+	    });
+	}
+	$scope.updateServeysList();
+    $scope.send = function(survey) {
         $http.put('/rest/surveys',survey).success(function(data){
             $window.alert('Data saved with id '+data.key);
-        })
+            $scope.updateServeysList();
+        }).error(function(){
+        	$window.alert('ERROR');
+        });
+    }
+    $scope.getSurvey = function(survey){
+	    $http.get('/rest/admin/survey/'+survey.code).success(function(data) {
+	    	angular.copy(data,$scope.survey)
+	    });
+//    	
     }
 }

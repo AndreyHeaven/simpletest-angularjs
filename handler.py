@@ -17,7 +17,7 @@ class SurveyListHandler(webapp2.RequestHandler):
 
     def put(self):
         survey = json.loads(self.request.body)
-        survey = self.parse_and_save(survey['text'], survey['resources'], survey['script'], survey['replace'])
+        survey = self.parse_and_save(survey.get('text'), survey.get('resources'), survey.get('script'), survey.get('replace'))
         self.response.out.write(json.dumps({'key': survey.key.urlsafe()}))
 
     def parse_and_save(self, text, resources, script, replace):
@@ -54,18 +54,22 @@ class SurveyListHandler(webapp2.RequestHandler):
         return survey
 
 
-
+class AdminSurveyHandler(webapp2.RequestHandler):
+    def get(self, test_key):
+        survey = Key(urlsafe=test_key).get()
+        self.response.out.write(json.dumps({'code': survey.key.urlsafe(), 
+                                            'script': survey.script,
+                                            'text': yaml.safe_dump(survey.to_json(),encoding='utf-8',default_flow_style=False),
+                                            'resources': yaml.safe_dump(survey.resource,encoding='utf-8',default_flow_style=False)
+                                            }))
 
 
 class AnswerHandler(webapp2.RequestHandler):
     def get(self, test_key):
-        result = []
         survey = Key(urlsafe=test_key).get()
+        result = []
         for q in Question.query(Question.test == survey.key).order(Question.id):
-            ans = []
-            for a in Answer.query(Answer.question == q.key).order(Answer.id):
-                ans.append({'id': a.id, 'text': a.text, 'value': a.value})
-            result.append({'id': q.id, 'text': q.text, 'type': q.type, 'answers': ans})
+            result.append(q.to_json())
         self.response.out.write(json.dumps(result))
 
 class ResultHandler(webapp2.RequestHandler):

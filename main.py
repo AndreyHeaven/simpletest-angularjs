@@ -37,5 +37,6 @@ app = webapp2.WSGIApplication([
     ('/rest/surveys', SurveyListHandler),
     ('/rest/survey/(.+)', AnswerHandler),
     ('/rest/result/(.+)', ResultHandler),
+    ('/rest/admin/survey/(.+)', AdminSurveyHandler),
     ('/api/user/(\w+)', UserHandler)
 ], debug=True)
