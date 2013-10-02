@@ -25,17 +25,17 @@ from handler import *
 
 class MainHandler(BaseHandler):
     def get(self, k = ''):
-        self.render("index.html",{"title": "My Angular App"})
+        self.render("index.html", {"title": "My Angular App"})
 
 app = webapp2.WSGIApplication([
     # CLIENT SIDE PAGES (LET ANGULAR HANDLE ROUTING)
     ('/', MainHandler),
-    ('/view2/(\w+)', MainHandler),
+    ('/view2/(.+)', MainHandler),
     ('/view3/(.+)', MainHandler),
     ('/view4/?', MainHandler),
     # OTHER SERVER PAGES / ENDPOINTS
     ('/rest/surveys', SurveyListHandler),
-    ('/rest/survey/(\w+)', AnswerHandler),
+    ('/rest/survey/(.+)', AnswerHandler),
     ('/rest/result/(.+)', ResultHandler),
     ('/api/user/(\w+)', UserHandler)
 ], debug=True)

@@ -7,8 +7,9 @@ class Survey(ndb.Model):
     """Models an individual browser entry with an name, creator, engine and license"""
     code = ndb.StringProperty()
     name = ndb.StringProperty()
-    resource = ndb.StringProperty(repeated=True)
+    resource = ndb.JsonProperty(repeated=True)
     script = ndb.StringProperty()
+    script_type = ndb.StringProperty(choices=['python'])
     uploaded = ndb.DateTimeProperty(auto_now_add=True)
 
 
@@ -21,7 +22,7 @@ class Question(ndb.Model):
 
 class Answer(ndb.Model):
     id = ndb.IntegerProperty()
-    code = ndb.StringProperty()
+    value = ndb.StringProperty()
     question = ndb.KeyProperty()
     text = ndb.StringProperty()
 
