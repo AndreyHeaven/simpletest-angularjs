@@ -4,6 +4,7 @@
 <dl>
     <dt style="margin-bottom: 20px;"><span>{{index+1}}.</span> {{questions[index].text}}</dt>
     <dd ng-switch="questions[index].type" style="margin-left: 20px; margin-right: 20px;">
+        <form name="AnswerForm">
         <div ng-switch-when="edit_text">
             <input class="form-control" type="text" name="input" ng-model="$parent.answer"
                    required ng-trim="true">
@@ -20,10 +21,11 @@
                 </li>
             </ul>
         </div>
+            </form>
     </dd>
 </dl>
 <hr/>
-<div class="text-center">
+<div class="text-center" style="position: absolute;left: 10px;right: 10px;bottom: 10px;">
     <div class="progress">
         <div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="1"
              aria-valuemax="{{questions.length}}" style="width: {{(index+1)/questions.length*100}}%;">

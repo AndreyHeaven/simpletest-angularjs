@@ -4,11 +4,9 @@ from google.appengine.ext import ndb
 
 
 class Survey(ndb.Model):
-    """Models an individual browser entry with an name, creator, engine and license"""
-    code = ndb.StringProperty()
     name = ndb.StringProperty()
-    resource = ndb.JsonProperty(repeated=True)
-    script = ndb.StringProperty()
+    resource = ndb.JsonProperty()
+    script = ndb.BlobProperty()
     script_type = ndb.StringProperty(choices=['python'])
     uploaded = ndb.DateTimeProperty(auto_now_add=True)
 
