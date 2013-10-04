@@ -1,30 +1,37 @@
 <h1>Hello {{user.nickname}}</h1>
 <form name="AddTestForm">
-	<select ng-model="survey.replace" ng-options="c.name for c in surveys"
-		ng-change="getSurvey(survey.replace)">
-		<option value="">-- choose survey --</option>
-	</select>
-	<table style="width: 100%">
-		<tr>
-			<td style="width: 50%">
-				<h5>Test (yaml):</h5> <textarea ng-model="survey.text"
-					class="form-control" rows="20">
-</textarea>
-			</td>
-			<td rowspan="2">
-				<h5>Script:</h5> <textarea ng-model="survey.script"
-					class="form-control" rows="30">
-</textarea>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<h5>Resources:</h5> <textarea ng-model="survey.resources"
-					class="form-control" rows="10">
-</textarea>
-			</td>
-		</tr>
-	</table>
-	<button ng-click="send(survey)">Save</button>
+    <div class="input-group">
+        <select class="form-control" ng-model="survey.code" ng-options="c.code as c.name for c in surveys"
+                ng-change="getSurvey(survey.code)">
+            <option value="">-- choose survey --</option>
+        </select>
+      <span class="input-group-btn">
+          <button class="btn btn-primary" type="button" ng-click="send(survey)">Save</button>
+      </span>
+    </div>
+    <!--<div class="alert alert-success" ng-hide="error">Все сохранилось</div>-->
+    <!--<div class="alert alert-danger" ng-show="error">Что-то не так</div>-->
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Test (yaml):</div>
+        <div class="panel-body">
+            <div ui-ace="{useWrapMode : true,
+      showGutter: false,
+      mode: 'yaml'}" ng-model="survey.text"></div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Script:</div>
+        <div class="panel-body">
+            <div ui-ace="{mode: 'python'}" ng-model="survey.script"></div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Resources:</div>
+        <div class="panel-body">
+            <div ui-ace="{mode: 'yaml'}" ng-model="survey.resources"></div>
+        </div>
+    </div>
+
 
 </form>

@@ -6,6 +6,7 @@ function AdminCtrl($scope, $http, $location,$window) {
         .error(function (data) {
             $location.path('/api/user/login')
         });*/
+
 	$scope.updateServeysList = function (){
 	    $http.get('/rest/surveys').success(function(data) {
 	        $scope.surveys = data;
@@ -14,16 +15,18 @@ function AdminCtrl($scope, $http, $location,$window) {
 	$scope.updateServeysList();
     $scope.send = function(survey) {
         $http.put('/rest/surveys',survey).success(function(data){
-            $window.alert('Data saved with id '+data.key);
+            $scope.error = false;
             $scope.updateServeysList();
         }).error(function(){
-        	$window.alert('ERROR');
+        	$scope.error = true;
         });
     }
     $scope.getSurvey = function(survey){
-	    $http.get('/rest/admin/survey/'+survey.code).success(function(data) {
-	    	angular.copy(data,$scope.survey)
-	    });
-//    	
+        if (!survey)
+            angular.copy({},$scope.survey)
+        else
+            $http.get('/rest/admin/survey/'+survey).success(function(data) {
+                angular.copy(data,$scope.survey)
+            });
     }
 }

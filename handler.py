@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+import StringIO
 from google.appengine.ext.ndb import Key
+import sys
 import webapp2
 import json
 from model import *
@@ -26,31 +28,13 @@ class SurveyListHandler(webapp2.RequestHandler):
 
 
         survey = Survey()
-        if replace:
-            survey = Key(urlsafe = replace['code']).get()
-            for q in Question.query(Question.test == survey.key):
-                for a in Answer.query(Answer.question == q.key):
-                    a.key.delete()
-                q.key.delete()
-        survey.name = dataMap['name']
+        if dataMap.get('code'):
+            survey = Key(urlsafe = dataMap.get('code')).get()
+        survey.name = dataMap.get('name')
         survey.script = str(script)
         survey.resource = resMap
+        survey.questions = dataMap.get('questions')
         survey.put()
-
-        for i, q in enumerate(dataMap.get('questions')):
-            question = Question()
-            question.id = i
-            question.test = survey.key
-            question.text = q.get('text')
-            question.type = q.get('type')
-            question.put()
-            if q.get('answers'):
-                for a in q.get('answers'):
-                    answer = Answer()
-                    answer.question = question.key
-                    answer.text = a.get('text')
-                    answer.value = a.get('value')
-                    answer.put()
         return survey
 
 
@@ -59,18 +43,20 @@ class AdminSurveyHandler(webapp2.RequestHandler):
         survey = Key(urlsafe=test_key).get()
         self.response.out.write(json.dumps({'code': survey.key.urlsafe(), 
                                             'script': survey.script,
-                                            'text': yaml.safe_dump(survey.to_json(),encoding='utf-8',default_flow_style=False),
-                                            'resources': yaml.safe_dump(survey.resource,encoding='utf-8',default_flow_style=False)
+                                            'text': yaml.safe_dump(survey.to_json(),
+                                                                   encoding='utf-8',
+                                                                   allow_unicode=True,
+                                                                   default_flow_style=False),
+                                            'resources': yaml.safe_dump(survey.resource,
+                                                                        encoding='utf-8',
+                                                                        allow_unicode=True, default_flow_style=False)
                                             }))
 
 
 class AnswerHandler(webapp2.RequestHandler):
     def get(self, test_key):
         survey = Key(urlsafe=test_key).get()
-        result = []
-        for q in Question.query(Question.test == survey.key).order(Question.id):
-            result.append(q.to_json())
-        self.response.out.write(json.dumps(result))
+        self.response.out.write(json.dumps(survey.questions))
 
 class ResultHandler(webapp2.RequestHandler):
     def put(self, test_key):
@@ -78,12 +64,26 @@ class ResultHandler(webapp2.RequestHandler):
         result = Result()
         result.test = survey.key
         result.answers = json.loads(self.request.body)
-        kw = {}
+        code_out = StringIO.StringIO()
+        code_err = StringIO.StringIO()
         try:
-            exec(survey.script, {'answers': result.answers, 'resource': survey.resource})
-            result.text = kw['result']
+            # capture output and errors
+            sys.stdout = code_out
+            sys.stderr = code_err
+            exec survey.script in {'answers': result.answers, 'resource': survey.resource}
+            # restore stdout and stderr
+            sys.stdout = sys.__stdout__
+            sys.stderr = sys.__stderr__
+
+            result.text = code_out.getValue()
         except Exception as e:
             print e
+        finally:
+            sys.stdout = sys.__stdout__
+            sys.stderr = sys.__stderr__
+            code_out.close()
+            code_err.close()
+
         result.put()
         self.response.out.write(json.dumps({'key': result.key.urlsafe()}))
 

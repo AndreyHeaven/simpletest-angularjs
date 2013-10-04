@@ -1,3 +1,7 @@
 .list-inline>li{
     padding: 10px;
 }
+
+.ace_editor {
+  height: 180px;
+}
