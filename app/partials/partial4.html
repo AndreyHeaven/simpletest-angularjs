@@ -1,4 +1,4 @@
-<h1>Hello {{user.nickname}}</h1>
+<h1>Hello {{user.nickname}} <a href="/api/user/logout" ng-show="user">logout</a></h1>
 <form name="AddTestForm">
     <div class="input-group">
         <select class="form-control" ng-model="survey.code" ng-options="c.code as c.name for c in surveys"

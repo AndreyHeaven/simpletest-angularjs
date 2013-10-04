@@ -7,6 +7,19 @@ import json
 from model import *
 from google.appengine.api import users
 import yaml
+import traceback
+
+
+def auth_required(fn):
+    def wrapped(*args, **kwargs):
+        if users.get_current_user():
+            return fn(*args, **kwargs)
+        else:
+            args[0].response.set_status(401)
+            return None
+    return wrapped
+
+
 
 
 class SurveyListHandler(webapp2.RequestHandler):
@@ -17,10 +30,11 @@ class SurveyListHandler(webapp2.RequestHandler):
             s_arr.append({'code': s.key.urlsafe(), 'name': s.name})
         self.response.out.write(json.dumps(s_arr))
 
+    #@auth_required
     def put(self):
         survey = json.loads(self.request.body)
         survey = self.parse_and_save(survey.get('text'), survey.get('resources'), survey.get('script'), survey.get('replace'))
-        self.response.out.write(json.dumps({'key': survey.key.urlsafe()}))
+        self.response.out.write(json.dumps(survey.to_json()))
 
     def parse_and_save(self, text, resources, script, replace):
         dataMap = yaml.load(text)
@@ -34,11 +48,18 @@ class SurveyListHandler(webapp2.RequestHandler):
         survey.script = str(script)
         survey.resource = resMap
         survey.questions = dataMap.get('questions')
+        i = -1
+        for q in survey.questions:
+            if q.get('id') is None:
+                q['id'] = i = i + 1
+
         survey.put()
         return survey
 
 
 class AdminSurveyHandler(webapp2.RequestHandler):
+
+    @auth_required
     def get(self, test_key):
         survey = Key(urlsafe=test_key).get()
         self.response.out.write(json.dumps({'code': survey.key.urlsafe(), 
@@ -75,9 +96,10 @@ class ResultHandler(webapp2.RequestHandler):
             sys.stdout = sys.__stdout__
             sys.stderr = sys.__stderr__
 
-            result.text = code_out.getValue()
+            result.text = code_out.getvalue()
         except Exception as e:
-            print e
+            traceback.print_exception(Exception, e, False)
+            result.text = code_err.getvalue()
         finally:
             sys.stdout = sys.__stdout__
             sys.stderr = sys.__stderr__
@@ -92,12 +114,14 @@ class ResultHandler(webapp2.RequestHandler):
         self.response.out.write(result.text)
 
 class UserHandler(webapp2.RequestHandler):
+
+
     def get(self, action):
 
         if action == 'login':
-            self.redirect(users.create_login_url())
+            self.redirect(users.create_login_url(self.request.referer))
         elif action == 'logout':
-            self.redirect(users.create_logout_url())
+            self.redirect(users.create_logout_url(self.request.referer))
         elif action == 'me' and users.get_current_user():
             self.response.out.write(json.dumps({
                 'admin': users.is_current_user_admin(),
@@ -105,3 +129,4 @@ class UserHandler(webapp2.RequestHandler):
             }))
         else:
             self.response.set_status(401)
+
