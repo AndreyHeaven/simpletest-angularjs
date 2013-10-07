@@ -1,0 +1,6 @@
+name: Тест
+questions:
+- text: Ваш вес в кг
+  type: edit_text
+- text: Ваш рост в метрах
+  type: edit_text

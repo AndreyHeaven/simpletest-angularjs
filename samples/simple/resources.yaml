@@ -1,0 +1,6 @@
+fat_index: Ваш индекс массы тела указывает на наличие ожирения %s степени',
+fat_index_pow_0:
+fat_index_pow_1: 1 (> III степени)
+fat_index_pow_2: 2 (III степень)
+fat_index_pow_3: 3 (II степень)
+fat_index_pow_5: 5 (норма)

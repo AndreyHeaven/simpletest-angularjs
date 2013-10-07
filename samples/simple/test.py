@@ -1,0 +1,11 @@
+# coding=utf-8
+answers = {"0":65,"1":1.65}
+res = {
+    'fat_index':'\u0412\u0430\u0448 \u0438\u043D\u0434\u0435\u043A\u0441 \u043C\u0430\u0441\u0441\u044B \u0442\u0435\u043B\u0430 \u0443\u043A\u0430\u0437\u044B\u0432\u0430\u0435\u0442 \u043D\u0430 \u043D\u0430\u043B\u0438\u0447\u0438\u0435 \u043E\u0436\u0438\u0440\u0435\u043D\u0438\u044F %s \u0441\u0442\u0435\u043F\u0435\u043D\u0438',
+    'fat_index_pow_0':'',
+    'fat_index_pow_1':'1 (> III \u0441\u0442\u0435\u043F\u0435\u043D\u0438)',
+    'fat_index_pow_2':'2 (III \u0441\u0442\u0435\u043F\u0435\u043D\u044C)',
+    'fat_index_pow_3':'3 (II \u0441\u0442\u0435\u043F\u0435\u043D\u044C)',
+    'fat_index_pow_5':'5 (\u043D\u043E\u0440\u043C\u0430)'
+}
+execfile('script.py',{'answers':answers,'res':res})
