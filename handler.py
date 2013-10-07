@@ -91,7 +91,7 @@ class ResultHandler(webapp2.RequestHandler):
             # capture output and errors
             sys.stdout = code_out
             sys.stderr = code_err
-            exec survey.script in {'answers': result.answers, 'resource': survey.resource}
+            exec survey.script in {'answers': result.answers, 'resources': survey.resource}
             # restore stdout and stderr
             sys.stdout = sys.__stdout__
             sys.stderr = sys.__stderr__
